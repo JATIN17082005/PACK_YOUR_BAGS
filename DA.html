@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; }
+        .btn { background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Student Registration</h2>
+        <form id="studentForm">
+            <input type="text" id="name" placeholder="Student Name" required>
+            <input type="text" id="register" placeholder="Register Number" required>
+            <input type="number" id="marks1" placeholder="Subject 1 Marks" required>
+            <input type="number" id="marks2" placeholder="Subject 2 Marks" required>
+            <input type="number" id="marks3" placeholder="Subject 3 Marks" required>
+            <button type="button" class="btn" onclick="saveStudent()">Save Student</button>
+            <button type="button" class="btn" onclick="viewStudents()">View Students</button>
+        </form>
+    </div>
+
+    <script>
+        class Student {
+            constructor(name, registerNumber, subjectMarks) {
+                this.name = name;
+                this.registerNumber = registerNumber;
+                this.subjectMarks = subjectMarks;
+            }
+            findNameLength() {
+                return this.name.length;
+            }
+            averageMarks() {
+                let sum = this.subjectMarks.reduce((acc, mark) => acc + mark, 0);
+                return (sum / this.subjectMarks.length).toFixed(2);
+            }
+            findSubject(index) {
+                return this.subjectMarks[index];
+            }
+        }
+
+        function saveStudent() {
+            let name = document.getElementById("name").value;
+            let register = document.getElementById("register").value;
+            let marks = [
+                parseInt(document.getElementById("marks1").value),
+                parseInt(document.getElementById("marks2").value),
+                parseInt(document.getElementById("marks3").value)
+            ];
+
+            let student = new Student(name, register, marks);
+            let students = JSON.parse(localStorage.getItem("students")) || [];
+            
+            if (students.length < 10) {
+                students.push(student);
+                localStorage.setItem("students", JSON.stringify(students));
+                alert("Student saved successfully!");
+                document.getElementById("studentForm").reset();
+            } else {
+                alert("Maximum 10 students can be added.");
+            }
+        }
+
+        function viewStudents() {
+            window.location.href = "DA1.html";
+        }
+    </script>
+
+</body>
+</html>

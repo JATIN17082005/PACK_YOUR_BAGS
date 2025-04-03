@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        .btn { background: #007bff; color: white; padding: 10px; margin: 5px; cursor: pointer; border: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Student Details</h2>
+        <p id="studentInfo">No student data available.</p>
+        <button class="btn" onclick="prevStudent()">Previous</button>
+        <button class="btn" onclick="nextStudent()">Next</button>
+        <button class="btn" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        let students = JSON.parse(localStorage.getItem("students")) || [];
+        let currentIndex = 0;
+
+        function displayStudent(index) {
+            if (students.length === 0) {
+                document.getElementById("studentInfo").innerHTML = "No student data available.";
+                return;
+            }
+            let student = students[index];
+            document.getElementById("studentInfo").innerHTML = `
+                <strong>Name:</strong> ${student.name} <br>
+                <strong>Register Number:</strong> ${student.registerNumber} <br>
+                <strong>Name Length:</strong> ${student.name.length} <br>
+                <strong>Marks:</strong> ${student.subjectMarks.join(", ")} <br>
+                <strong>Average Marks:</strong> ${(
+                    student.subjectMarks.reduce((sum, mark) => sum + mark, 0) / student.subjectMarks.length
+                ).toFixed(2)}
+            `;
+        }
+
+        function prevStudent() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayStudent(currentIndex);
+            } else {
+                alert("This is the first student.");
+            }
+        }
+
+        function nextStudent() {
+            if (currentIndex < students.length - 1) {
+                currentIndex++;
+                displayStudent(currentIndex);
+            } else {
+                alert("This is the last student.");
+            }
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
+        }
+
+        window.onload = function () {
+            displayStudent(currentIndex);
+        };
+    </script>
+
+</body>
+</html>

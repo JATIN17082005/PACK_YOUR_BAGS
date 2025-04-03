@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaziranga - A UNESCO World Heritage site famous for one-horned rhinos.</title>
+    <style>
+        body {
+            font-family: 'Garamond', serif;
+            margin: 0;
+            padding: 0;
+            background: #e0ddbd;
+            color: aliceblue;
+            text-align: center;
+        }
+
+        .navbar {
+            background: #004d99;
+            padding: 20px;
+            color: gold;
+            font-size: 2em;
+            font-weight: bold;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero {
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .slideshow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+
+        .hero h1 {
+            font-size: 10em;
+            text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+            color: gold;
+            margin: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .description {
+            padding: 40px;
+            font-size: 1.3em;
+            background: #003366;
+            border-radius: 15px;
+            margin: 30px auto;
+            width: 80%;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 50px;
+            color:gold;
+        }
+
+        .footer {
+            background: #002244;
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            margin-top: 30px;
+        }
+
+        .back-btn {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            background: gold;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            background: darkorange;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar"><a href="index.html"><image src="logo.png" height="100px"></image></a></div> 
+    <div class="hero">
+        <div class="slideshow">
+            <div class="slide" style="background-image: url('kaziranga.jpg');"></div>
+            <div class="slide" style="background-image: url('kaziranga2.jpg');"></div>
+            <div class="slide" style="background-image: url('kaziranga3.jpg');"></div>
+        </div>
+        <h1>Welcome to Kaziranga</h1>
+    </div>
+
+
+    <div class="description">
+        
+        <h2>Places to Visit in Kaziranga:-</h2>
+    <ol>
+        <li>Kaziranga National Park - One-horned rhinos, wildlife safari experience</li>
+        <li>Agaratoli Range - Birdwatching paradise, scenic forest trails</li>
+        <li>Bagori Range - Elephant safari, rich biodiversity</li>
+        <li>Kohora Range - Jeep safari, diverse animal sightings</li>
+        <li>Panbari Reserve Forest - Rare birds, untouched natural beauty</li>
+        <li>Diphlu River Lodge - Luxury stay, riverside jungle retreat</li>
+        <li>Kakochang Waterfalls - Refreshing waterfall, scenic trekking destination</li>
+        <li>Deopahar Ruins - Ancient temple, historical significance remains</li>
+        <li>Bhairabkunda - Peaceful confluence, stunning natural landscapes</li>
+        <li>Tea Gardens - Lush greenery, aromatic Assam tea</li>
+    </ol>
+        
+    </div>
+
+    <div class="footer">
+        <button class="back-btn" onclick="window.location.href='booking.html'" >Book Now!</button>
+    </div>
+    <script>
+        // Slideshow functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            
+            // Show first slide
+            slides[currentSlide].classList.add('active');
+            
+            // Change slide every 5 seconds
+            setInterval(nextSlide, 5000);
+            
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+        });
+    </script>
+
+</body>
+</html>

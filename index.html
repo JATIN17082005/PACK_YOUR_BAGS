@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Your Bags - Travel Planner</title>
+    <style>
+        body {
+            font-family: Garamond, serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: auto;
+            background: linear-gradient(to right, #e0ddbd, #e0dec5d4);
+
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0b1e32;
+            padding: 15px 20px;
+            color: gold;
+            position: fixed;
+            width: 100%;
+            top: -5px;
+            z-index: 1000;
+            font-size: 2em;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 2);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 15px;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .auth-link {
+            margin-left: 10px;
+            padding: 12px 20px !important;
+            border-radius: 30px;
+        }
+
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            color: gold;
+            position: relative;
+            padding-top: 80px;
+            font-size: 30px;
+            overflow: hidden;
+        }
+
+        .hero .slideshow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .hero .slide.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 2);
+            animation: fadeIn 0.5s ease-in-out;
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 2em;
+            color: gold;
+            text-shadow: 5px 5px 5px rgba(0, 0, 0, 5);
+            animation: fadeIn 1s ease-in-out;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: gold;
+            color: black;
+            padding: 15px 25px;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-bottom: 5px;
+            transition: 0.3s;
+            border-radius: 30px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn:hover {
+            background: darkorange;
+            transform: scale(1.1);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-container {
+            margin: 100px auto 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar {
+            width: 50%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #004d99;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .search-bar:hover {
+            width: 55%;
+            border-color: gold;
+            box-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+        }
+
+
+        .destinations {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .package {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .destinations h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .package h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .destination-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .destination {
+            background: linear-gradient(to bottom, #0443777d, #022748);
+            padding: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            width: 300px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-align: center;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 2);
+        }
+
+        .destination:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 5);
+        }
+
+        .contact {
+            padding: 50px;
+            background: linear-gradient(to right, #003366, #00336692);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .contact input,
+        .contact textarea {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .login {
+            padding: 50px;
+            background: linear-gradient(to right, #003366, #00336692);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .about {
+            padding: 50px;
+            background: linear-gradient(to right, #003366, #00336692);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .conInfo {
+            padding: 50px;
+            background: linear-gradient(to right, #003366, #00336692);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .profile {
+            padding: 50px;
+            background: linear-gradient(to right, #003366, #00336692);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+            display: none;
+        }
+
+        .login input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .contact button {
+            padding: 10px 20px;
+            background: gold;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 30px;
+
+        }
+
+        .contact button:hover {
+            background: darkorange;
+            transform: scale(1.1);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .login button {
+            padding: 10px 20px;
+            background: gold;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 30px;
+
+        }
+
+        .login button:hover {
+            background: darkorange;
+            transform: scale(1.1);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-container button:hover {
+            background: darkorange;
+            transform: scale(1.1);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+
+        .footer {
+            background: #002244;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .footer a {
+            color: gold;
+        }
+
+        h3 {
+
+            color: gold;
+            font-size: 30px;
+        }
+
+        p {
+            color: aliceblue
+        }
+
+        .destination a {
+            color: gold;
+        }
+
+        .package a {
+            color: gold;
+        }
+
+        .search {
+            padding: 10px 20px;
+            background: gold;
+            border: none;
+            font-size: 1.2em;
+            cursor: auto;
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+
+        .search :hover {
+            background: darkorange;
+        }
+
+        .side {
+            text-align: left;
+        }
+
+        .error {
+            color: red;
+            font-size: 30px;
+            display: none;
+        }
+
+        .success {
+            color: lightgreen;
+            font-size: 30px;
+            display: none;
+        }
+
+        .profile-info {
+            background: linear-gradient(to bottom, #0443777d, #022748);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .profile-info p {
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+
+        .profile-info span {
+            color: gold;
+            font-weight: bold;
+        }
+
+        .about h2 {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .about h3 {
+            color: #FFFF00;
+        }
+
+        /* Search Results Styles */
+        .search-results-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-results-title {
+            color: gold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-result-item {
+            background: linear-gradient(to bottom, #0443777d, #022748);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar {
+                width: 80% !important;
+                margin-bottom: 10px;
+            }
+
+            .search-bar:hover {
+                width: 85% !important;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <!-- Add React dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <a href="index.html">
+                <image src="logo.png" height="70"></image>
+                &nbsp;&nbsp;<b>Pack Your Bags</b>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="#destinations">Destinations</a>
+            <a href="#package">Packages</a>
+            <a href="#contact">Contact</a>
+            <a href="#login" id="loginNav" class="auth-link">Login</a>
+            <a href="#profile" id="profileNav" class="auth-link" style="display:none;">Profile&nbsp;&nbsp;</a>
+        </div>
+    </div>
+
+
+    <div class="hero">
+        <div class="slideshow">
+            <div class="slide active"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover2.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover3.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover4.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover5.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover6.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover7.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover8.jpeg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover9.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover10.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover11.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover12.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover13.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover14.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cover15.jpg');">
+            </div>
+        </div>
+        <a href="globe1.jpeg" target="_blank">
+            <image src="logo.png" height="200"></image>
+        </a><br><br>
+        <h1>Explore the World with Us</h1>
+        <p>Your dream vacation is just a click away.</p><br><br>
+        <span>
+            <button class="btn" onclick="scrollToDestinations()"><b>Discover More</b></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="btn" onclick="scrollToAbout()"><b>About Us</b></button>
+        </span>
+    </div>
+
+    <!-- React Search Bar Component -->
+    <div id="search-root"></div>
+
+    <div class="destinations" id="destinations">
+        <h2>Top Destinations in India.</h2>
+        <div class="destination-container">
+            <div class="destination">
+                <div class="ladakh">
+                    <a href="lad.html" target="_blank">
+                        <div>
+                            <image src="LADAKH.jpg" width="300"></image>
+                        </div>
+                        <h3>
+                            <image href="LADAKH.jpg"></image>
+                            Ladakh and Leh, Kashmir
+                        </h3>
+                        <p>Breathtaking landscapes, high-altitude lakes, and monasteries..</p>
+                    </a>
+                </div>
+            </div>
+            <div class="destination">
+                <a href="jaipur.html" target="_blank">
+                    <div>
+                        <image src="jaipur.jpg" width="300"></image>
+                    </div>
+                    <h3>Jaipur, Rajasthan</h3>
+                    <p>A royal destination filled with palaces, forts, and vibrant bazaars.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="agra.html" target="_blank">
+                    <div>
+                        <image src="agra.jpg" width="300"></image>
+                    </div>
+                    <h3>Agra, Uttar Pradesh</h3>
+                    <p>Home to one of the Seven Wonders of the World.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="varanasi.html" target="_blank">
+                    <div>
+                        <image src="varanasi.jpeg" width="300"></image>
+                    </div>
+                    <h3>Varanasi, Uttar Pradesh</h3>
+                    <p>Experience the divine Ganga Aarti and ancient temples.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="darjeeling.html" target="_blank">
+                    <div>
+                        <image src="darjeeling.jpg" width="300"></image>
+                    </div>
+
+                    <h3>Darjeeling, West Bengal</h3>
+                    <p>Scenic tea plantations, toy trains, and mountain views.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="shillong.html" target="_blank">
+                    <div>
+                        <image src="shillong.jpg" width="300"></image>
+                    </div>
+                    <h3>Shillong, Meghalaya</h3>
+                    <p>Rolling hills, waterfalls, and mesmerizing landscapes.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="kaziranga.html" target="_blank">
+                    <div>
+                        <image src="kaziranga.jpg" width="300"></image>
+                    </div>
+                    <h3>Kaziranga National Park, Assam</h3>
+                    <p>A UNESCO World Heritage site famous for one-horned rhinos.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="hyd.html" target="_blank">
+                    <div>
+                        <image src="hyd.png" width="300"></image>
+                    </div>
+                    <h3>Hyderabad, Telangana</h3>
+                    <p>A mix of history, culture, and delicious food.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="araku.html" target="_blank">
+                    <div>
+                        <image src="araku.jpg" width="300"></image>
+                    </div>
+                    <h3>Araku Valley, Andhra Pradesh</h3>
+                    <p>Lush green valleys, waterfalls, and tribal culture.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="tirupati.html" target="_blank">
+                    <div>
+                        <image src="tirupati.jpg" width="300"></image>
+                    </div>
+                    <h3>Tirupati, Andhra Pradesh</h3>
+                    <p>One of the most visited pilgrimage sites in the world.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="hampi.html" target="_blank">
+                    <div>
+                        <image src="hampi.jpg" width="300"></image>
+                    </div>
+                    <h3>Hampi, Karnataka</h3>
+                    <p>Ancient temples, ruins, and bouldered landscapes.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="coorg.html" target="_blank">
+                    <div>
+                        <image src="coorg.jpg" width="300"></image>
+                    </div>
+                    <h3> Coorg, Karnataka</h3>
+                    <p>Scenic coffee plantations and misty hills.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="munnar.html" target="_blank">
+                    <div>
+                        <image src="munnar.jpg" width="300"></image>
+                    </div>
+                    <h3>Munnar, Kerala </h3>
+                    <p>Rolling tea estates, mist-covered hills, and wildlife.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="konark.html" target="_blank">
+                    <div>
+                        <image src="konark.jpg" width="300"></image>
+                    </div>
+                    <h3>Konark, Odisha</h3>
+                    <p>Sun temple- An architectural marvel.</p>
+                </a>
+            </div>
+            <div class="destination">
+                <a href="pondy.html" target="_blank">
+                    <div>
+                        <image src="pondy.jpg" width="300"></image>
+                    </div>
+                    <h3>Pondicherry, Tamil Nadu</h3>
+                    <p>A blend of French architecture, serene beaches, and cafés.</p>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!--_______________________________________________________________________________________________________________________-->
+    <!--Packages-->
+
+    <div class="package" id="package">
+        <br><br><br><br>
+        <div>
+            <h2>Packages we offer</h2>
+            <div class="destination-container">
+                <div class="destination">
+                    <a href="basic.html" target="_blank">
+                        <div>
+                            <image src="basic1.jpg" width="300"></image>
+                        </div>
+                        <h3>Basic package.</h3>
+                        <p>A budget-friendly travel option covering essential accommodations and standard
+                            transportation. Ideal for solo travelers or those looking for an economical trip with guided
+                            group tours and basic amenities.</p>
+                    </a>
+                </div>
+                <div class="destination">
+                    <a href="comfy.html" target="_blank">
+                        <div>
+                            <image src="comfy.jpg" width="300"></image>
+                        </div>
+                        <h3>Comfy package.</h3>
+                        <p>A mid-range package offering comfortable accommodations, upgraded transportation, and some
+                            exclusive experiences. Suitable for families and couples who want a balance of affordability
+                            and comfort.</p>
+                    </a>
+                </div>
+                <div class="destination">
+                    <a href="premium.html" target="_blank">
+                        <div>
+                            <image src="premium.jpg" width="300"></image>
+                        </div>
+                        <h3>Premium package.</h3>
+                        <p>A luxury travel experience with high-end accommodations, private transportation, personalized
+                            services, and exclusive excursions. Designed for those seeking a stress-free, high-class
+                            vacation with premium hospitality.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="contact" id="contact">
+        <br>
+        <h2>Contact Us <a href="#conInfo">
+                <image src="contact.png" height="50px"></image>
+            </a></h2>
+        <form id="contactForm">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <p></p>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <!-- Login Section -->
+    <div class="login" id="login">
+        <br>
+        <h2>LOGIN/SIGNUP <image src="login1.png" height="50px"></image>
+        </h2>
+        <form id="loginForm">
+            <input type="text" id="name" onfocus="clearError('nameError')" onblur="validateName()"
+                placeholder="Enter your Name" required><br>
+            <p id="nameError" class="error">Name must be in uppercase.</p><br>
+            <input type="email" id="email" onfocus="clearError('emailError')" onchange="validateEmail()"
+                placeholder="Enter your Email" required><br>
+            <p id="emailError" class="error">Enter a valid email.</p>
+            <br>
+            <input type="password" id="password" placeholder="Enter your Password" required>
+            <p id="loginError" class="error"></p>
+            <p id="loginSuccess" class="success"></p>
+            <p></p>
+            <button type="button" onclick="handleLogin()">Login / Sign Up</button>
+        </form>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile" id="profile">
+        <br>
+        <h2>Your Profile <image src="login1.png" height="50px"></image>
+        </h2>
+        <div class="profile-info" id="profileInfo">
+            <!-- Profile information will be displayed here -->
+        </div>
+        <p></p>
+        <button type="button" class="btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="about" id="about">
+        <br>
+        <h2>🌍 About Us – Your Journey, Our Passion ✈️</h2>
+        <h3 class="side">
+            <ul>
+                <li>Welcome to Pack Your Bags, where every journey begins with a dream and ends with unforgettable
+                    memories! 🌟</li>
+                <br>
+                <br>
+                <li>We are not just a travel planner; we are your adventure architects, experience curators, and memory
+                    makers. From hidden gems to iconic landmarks, we craft journeys that suit your wanderlust, budget,
+                    and style.</li>
+                <br>
+                <br>
+                <li>Whether you crave thrilling escapades, tranquil retreats, cultural deep dives, or foodie adventures,
+                    we've got you covered! Our team of passionate explorers ensures that your trip is smooth, seamless,
+                    and filled with surprises.</li>
+                <br>
+                <br>
+                <li>💡 Why Choose Us?
+                    <br><br>
+                    ✅ Personalized Itineraries – Tailor-made travel plans that match your interests<br>
+                    ✅ Hassle-Free Planning – We handle the details so you can enjoy the experience<br>
+                    ✅ Exclusive Deals & Hidden Gems – Get access to special offers and secret spots<br>
+                    ✅ 24/7 Support – We're with you every step of the way<br><br>
+                    🌟 Our Mission<br><br>
+                </li>
+                <li>At Pack Your Bags, we believe that travel is more than just visiting new places—it's about creating
+                    stories, embracing cultures, and discovering the world in a way that resonates with you. We strive
+                    to make every trip stress-free, exciting, and unforgettable.</li>
+
+                <li>So, whether you're dreaming of a romantic getaway, a solo backpacking adventure, a fun family
+                    vacation, or a luxury escape, we're here to turn your travel goals into reality.</li>
+                <li>So, pack your bags and let's turn your travel dreams into reality. Because life's too short for
+                    ordinary trips! 🚀🌴</li>
+                <br>
+                <br>
+            </ul>
+            📍 Where will your next adventure take you? Let's plan it together!
+
+        </h3>
+        <br>
+
+        <button class="btn" onclick="scrollToDestinations()"><b>Start Planning!</b></button>
+    </div>
+    <div class="conInfo" id="conInfo">
+        <h2>Contact Us</h2>
+        <h3 class="side">
+            <ul>
+                <li>Phone: +91 9876543210</li>
+                <li>Email: packyourbagsin@gmail.com</li>
+            </ul>
+        </h3>
+        <br><br>
+        <span>
+            <a href="https://www.instagram.com/makemytrip/?hl=en" target="_blank">
+                <image src="iglogo.png" height="100px"></image>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://www.linkedin.com/company/makemytrip.com/" target="_blank">
+                <image src="linkedin.png" height="100px"></image>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://youtube.com/@makemytripofficial?feature=shared" target="_blank">
+                <image src="yt.png" height="100px"></image>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        </span>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Pack Your Bags. All rights reserved.
+        <b>Mail:</b>
+        <a href="packyourbagsin@gmail.com" target="_blank">packyourbagsin@gmail.com</a>
+    </div>
+
+    <script>
+        // User data storage
+        let users = JSON.parse(localStorage.getItem('travelUsers')) || [];
+        let currentUser = null;
+
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function () {
+            checkLoginStatus();
+
+            let slides = document.querySelectorAll(".slide");
+            let index = 0;
+
+            function changeSlide() {
+                slides[index].classList.remove("active");
+                index = (index + 1) % slides.length;
+                slides[index].classList.add("active");
+            }
+
+            // Start slideshow with 4 second interval
+            setInterval(changeSlide, 4000);
+
+            // Preload images for smoother transitions
+            function preloadImages() {
+                for (let i = 0; i < slides.length; i++) {
+                    const img = new Image();
+                    const bgImage = slides[i].style.backgroundImage;
+                    img.src = bgImage.replace('linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), ', '')
+                        .replace(/url\(["']?(.*?)["']?\)/, '$1');
+                }
+            }
+
+            preloadImages();
+
+            // Contact form submission
+            document.getElementById('contactForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('Thank you for your message! We will get back to you soon.');
+                this.reset();
+            });
+        });
+
+        function scrollToDestinations() {
+            document.getElementById('destinations').scrollIntoView({ behavior: "smooth" });
+        }
+
+        function scrollToAbout() {
+            document.getElementById('about').scrollIntoView({ behavior: "smooth" });
+        }
+
+        function validateName() {
+            let name = document.getElementById("name").value;
+            let nameError = document.getElementById("nameError");
+            if (name !== name.toUpperCase()) {
+                nameError.style.display = "block";
+                return false;
+            }
+            nameError.style.display = "none";
+            return true;
+        }
+
+        function validateEmail() {
+            let email = document.getElementById("email").value;
+            let emailError = document.getElementById("emailError");
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                emailError.style.display = "block";
+                return false;
+            }
+            emailError.style.display = "none";
+            return true;
+        }
+
+        function clearError(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        function handleLogin() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Validate inputs
+            if (!validateName() || !validateEmail()) {
+                document.getElementById('loginError').textContent = 'Please fix the errors above';
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+
+            // Check if user exists
+            const userExists = users.find(user => user.email === email);
+
+            if (userExists) {
+                // Login
+                if (userExists.password === password) {
+                    currentUser = userExists;
+                    localStorage.setItem('currentTravelUser', JSON.stringify(currentUser));
+                    showProfile();
+                    document.getElementById('loginSuccess').textContent = 'Login successful!';
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    document.getElementById('loginError').style.display = 'none';
+                } else {
+                    document.getElementById('loginError').textContent = 'Incorrect password';
+                    document.getElementById('loginError').style.display = 'block';
+                    document.getElementById('loginSuccess').style.display = 'none';
+                }
+            } else {
+                // Sign up
+                const newUser = {
+                    name: name,
+                    email: email,
+                    password: password,
+                    bookings: []
+                };
+                users.push(newUser);
+                localStorage.setItem('travelUsers', JSON.stringify(users));
+                currentUser = newUser;
+                localStorage.setItem('currentTravelUser', JSON.stringify(currentUser));
+                showProfile();
+                document.getElementById('loginSuccess').textContent = 'Account created successfully!';
+                document.getElementById('loginSuccess').style.display = 'block';
+                document.getElementById('loginError').style.display = 'none';
+            }
+        }
+
+        function checkLoginStatus() {
+            const user = JSON.parse(localStorage.getItem('currentTravelUser'));
+            if (user) {
+                currentUser = user;
+                showProfile();
+            }
+        }
+
+        function showProfile() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('profile').style.display = 'block';
+            document.getElementById('loginNav').style.display = 'none';
+            document.getElementById('profileNav').style.display = 'block';
+
+            // Display user info
+            const profileInfo = document.getElementById('profileInfo');
+            profileInfo.innerHTML = `
+                <p><span>Name:</span> ${currentUser.name}</p>
+                <p><span>Email:</span> ${currentUser.email}</p>
+            `;
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentTravelUser');
+            document.getElementById('profile').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+            document.getElementById('profileNav').style.display = 'none';
+            document.getElementById('loginNav').style.display = 'block';
+            document.getElementById('loginForm').reset();
+        }
+    </script>
+    <script type="text/babel">
+        // SearchBar Component - Functional search with React
+        function SearchBar() {
+            const [searchTerm, setSearchTerm] = React.useState('');
+            const [filteredDestinations, setFilteredDestinations] = React.useState([]);
+            const [isSearching, setIsSearching] = React.useState(false);
+
+            // Sample destination data (would match your HTML destinations)
+            const destinations = [
+                { name: "Ladakh and Leh, Kashmir", desc: "Breathtaking landscapes, high-altitude lakes, and monasteries..", image: "LADAKH.jpg", link: "lad.html" },
+                { name: "Jaipur, Rajasthan", desc: "A royal destination filled with palaces, forts, and vibrant bazaars.", image: "jaipur.jpg", link: "jaipur.html" },
+                { name: "Agra, Uttar Pradesh", desc: "Home to one of the Seven Wonders of the World.", image: "agra.jpg", link: "agra.html" },
+                { name: "Varanasi, Uttar Pradesh", desc: "Experience the divine Ganga Aarti and ancient temples.", image: "varanasi.jpeg", link: "varanasi.html" },
+                { name: "Darjeeling, West Bengal", desc: "Scenic tea plantations, toy trains, and mountain views.", image: "darjeeling.jpg", link: "darjeeling.html" },
+                { name: "Shillong, Meghalaya", desc: "Rolling hills, waterfalls, and mesmerizing landscapes.", image: "shillong.jpg", link: "shillong.html" },
+                { name: "Kaziranga National Park, Assam", desc: "A UNESCO World Heritage site famous for one-horned rhinos.", image: "kaziranga.jpg", link: "kaziranga.html" },
+                { name: "Hyderabad, Telangana", desc: "A mix of history, culture, and delicious food.", image: "hyd.png", link: "hyd.html" },
+                { name: "Araku Valley, Andhra Pradesh", desc: "Lush green valleys, waterfalls, and tribal culture.", image: "araku.jpg", link: "araku.html" },
+                { name: "Tirupati, Andhra Pradesh", desc: "One of the most visited pilgrimage sites in the world.", image: "tirupati.jpg", link: "tirupati.html" },
+                { name: "Hampi, Karnataka", desc: "Ancient temples, ruins, and bouldered landscapes.", image: "hampi.jpg", link: "hampi.html" },
+                { name: "Coorg, Karnataka", desc: "Scenic coffee plantations and misty hills.", image: "coorg.jpg", link: "coorg.html" },
+                { name: "Munnar, Kerala", desc: "Rolling tea estates, mist-covered hills, and wildlife.", image: "munnar.jpg", link: "munnar.html" },
+                { name: "Konark, Odisha", desc: "Sun temple- An architectural marvel.", image: "konark.jpg", link: "konark.html" },
+                { name: "Pondicherry, Tamil Nadu", desc: "A blend of French architecture, serene beaches, and cafés.", image: "pondy.jpg", link: "pondy.html" }
+            ];
+
+            const handleSearch = () => {
+                if (searchTerm.trim() === '') {
+                    setFilteredDestinations([]);
+                    setIsSearching(false);
+                    return;
+                }
+
+                setIsSearching(true);
+                const filtered = destinations.filter(dest =>
+                    dest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    dest.desc.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                setFilteredDestinations(filtered);
+            };
+
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            };
+
+            return (
+                <div>
+                    <div className="search-container" style={{ margin: '100px auto 20px', display: 'flex', justifyContent: 'center' }}>
+                        <input
+                            type="text"
+                            className="search-bar"
+                            placeholder="Search destinations..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            style={{
+                                width: '50%',
+                                padding: '12px',
+                                fontSize: '1em',
+                                border: '2px solid #004d99',
+                                borderRadius: '25px',
+                                outline: 'none',
+                                transition: 'all 0.5s ease-in-out'
+                            }}
+                        />
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button
+                            type="button"
+                            className="search"
+                            onClick={handleSearch}
+                            style={{
+                                padding: '10px 20px',
+                                background: 'gold',
+                                border: 'none',
+                                fontSize: '1.2em',
+                                cursor: 'pointer',
+                                transition: '0.3s',
+                                borderRadius: '30px'
+                            }}
+                        >
+                            <b>Search🔍</b>
+                        </button>
+                    </div>
+
+                    {/* Search Results */}
+                    {isSearching && (
+                        <div style={{
+                            maxWidth: '1200px',
+                            margin: '0 auto',
+                            padding: '20px',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            borderRadius: '10px'
+                        }}>
+                            <h3 style={{ color: 'gold', textAlign: 'center' }}>
+                                {filteredDestinations.length > 0
+                                    ? `Found ${filteredDestinations.length} matching destinations`
+                                    : 'No destinations found matching your search'}
+                            </h3>
+
+                            {filteredDestinations.length > 0 && (
+                                <div className="destination-container" style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    flexWrap: 'wrap',
+                                    gap: '60px',
+                                    marginTop: '30px'
+                                }}>
+                                    {filteredDestinations.map((dest, index) => (
+                                        <div
+                                            key={index}
+                                            className="destination"
+                                            style={{
+                                                background: 'linear-gradient(to bottom,#0443777d, #022748)',
+                                                padding: '20px',
+                                                boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.3)',
+                                                borderRadius: '10px',
+                                                width: '300px',
+                                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                                                textAlign: 'center',
+                                                textShadow: '3px 3px 5px rgba(0, 0, 0, 2)'
+                                            }}
+                                        >
+                                            <a href={dest.link} target="_blank">
+                                                <div>
+                                                    <img src={dest.image} width="300" alt={dest.name} />
+                                                </div>
+                                                <h3 style={{ color: 'gold', fontSize: '30px' }}>{dest.name}</h3>
+                                                <p style={{ color: 'aliceblue' }}>{dest.desc}</p>
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Render the SearchBar component
+        const searchRoot = ReactDOM.createRoot(document.getElementById('search-root'));
+        searchRoot.render(<SearchBar />);
+    </script>
+</body>
+
+</html>

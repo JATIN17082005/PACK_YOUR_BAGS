@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form</title>
+    <style>
+        body {
+            font-family: 'Garamond', serif;
+            margin: 0;
+            padding: 0;
+            background: #e0ddbd;
+            color: gold;
+            text-align: center;
+        }
+        .navbar {
+            background: #003366;
+            padding: 20px;
+            color: gold;
+            font-size: 2em;
+            font-weight: bold;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .form-container {
+            margin: 100px auto;
+            background: #003366;
+            padding: 30px;
+            border-radius: 15px;
+            width: 50%;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+        .form-container h1{
+            color:white;
+            font-size:3em;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-size: 1.2em;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+        .submit-btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            background: gold;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background: darkorange;
+            transform: scale(1.05);
+        }
+        .error {
+            color: red;
+            font-size: 20px;
+            display: none;
+        }
+        #display-container {
+            margin: 30px auto;
+            padding: 20px;
+            width: 50%;
+            background: #003366;
+            border-radius: 15px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            color: gold;
+            font-size: 1.2em;
+            display: none;
+        }
+        #display-container h2{
+            text-decoration: underline;
+            color: gold;
+            font-size: larger;
+        }
+        #display-container p{
+            color:white;
+            font-size: 20px;
+        }
+        .back-btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            background: gold;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        .back-btn:hover {
+            background: darkorange;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html"><img src="logo.png" height="80"></a>
+    </div>
+    <br><br>
+
+    <div class="form-container">
+        <h1><b>Enter Your details</b></h1>
+        <form id="bookingForm">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" onfocus="clearError('nameError')" onblur="validateName()" placeholder="Enter your Name" required>
+            <p id="nameError" class="error">Name must be in uppercase.</p><br>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" onfocus="clearError('phoneError')" onchange="validatePhone()" required>
+            <p id="phoneError" class="error">Phone number must be 10 digits.</p>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="from-date">From (Date & Time):</label>
+            <input type="datetime-local" id="from-date" name="from-date" required>
+
+            <label for="to-date">To (Date & Time):</label>
+            <input type="datetime-local" id="to-date" name="to-date" required>
+
+            <label for="package-type">Trip Packages:</label>
+            <select id="package-type" name="package-type" required>
+                <option value="basic">Basic</option>
+                <option value="comfy">Comfy</option>
+                <option value="premium">Premium</option>
+            </select>
+
+            <label for="num-persons">Number of Persons:</label>
+            <select id="num-persons" name="num-persons" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <div class="display-container" id="display-container">
+        <h2>Booking Details</h2><br><br>
+        <p><strong>Full Name: </strong> <span id="display-name"></span></p>
+        <p><strong>Phone Number: </strong> <span id="display-phone"></span></p>
+        <p><strong>Date of Birth: </strong> <span id="display-dob"></span></p>
+        <p><strong>From (Date & Time): </strong> <span id="display-from"></span></p>
+        <p><strong>To (Date & Time): </strong> <span id="display-to"></span></p>
+        <p><strong>Trip Package:</strong> <span id="display-package"></span></p>
+        <p><strong>Number of Persons:</strong> <span id="display-persons"></span></p>
+
+        <div class="container">
+            <h2>Estimated Price</h2>
+            <p><strong>Trip Package:</strong> <span id="package"></span></p>
+            <p><strong>Number of Persons:</strong> <span id="persons"></span></p>
+            <p><strong>Number of Nights:</strong> <span id="nights"></span></p>
+            <p><strong>Total Cost:</strong> ₹<span id="total-cost"></span></p>
+        </div>
+        <button class="back-btn" onclick="window.location.href='payment.html' " >Proceed to payment</button>
+    </div>
+
+    <script>
+        document.getElementById("bookingForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevents page reload
+            
+            let name = document.getElementById("name").value;
+            let phone = document.getElementById("phone").value;
+            let dob = document.getElementById("dob").value;
+            let fromDate = document.getElementById("from-date").value;
+            let toDate = document.getElementById("to-date").value;
+            let packageType = document.getElementById("package-type").value;
+            let numPersons = document.getElementById("num-persons").value;
+
+            // Display the basic booking details
+            document.getElementById("display-name").innerText = name;
+            document.getElementById("display-phone").innerText = phone;
+            document.getElementById("display-dob").innerText = dob;
+            document.getElementById("display-from").innerText = fromDate;
+            document.getElementById("display-to").innerText = toDate;
+            document.getElementById("display-package").innerText = packageType;
+            document.getElementById("display-persons").innerText = numPersons;
+
+            // Calculate and display the price
+            calculatePrice(fromDate, toDate, packageType, numPersons);
+
+            document.getElementById("display-container").style.display = "block";
+            let displayContainer = document.getElementById("display-container");
+            displayContainer.style.display = "block";
+            displayContainer.scrollIntoView({ behavior: "smooth" });
+        });
+
+        function calculatePrice(fromDate, toDate, packageType, numPersons) {
+            // Convert dates to Date objects
+            const from = new Date(fromDate);
+            const to = new Date(toDate);
+            
+            // Calculate number of nights (minimum 1 night)
+            const timeDiff = to - from;
+            const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            const adjustedNights = nights < 1 ? 1 : nights;
+            
+            // Set prices based on package type
+            let pricePerNight;
+            switch(packageType) {
+                case 'basic':
+                    pricePerNight = 3500;
+                    break;
+                case 'comfy':
+                    pricePerNight = 6000;
+                    break;
+                case 'premium':
+                    pricePerNight = 9000;
+                    break;
+                default:
+                    pricePerNight = 0;
+            }
+            
+            // Calculate total cost
+            const totalCost = pricePerNight * adjustedNights * numPersons;
+            
+            // Display the calculated values
+            document.getElementById("package").innerText = packageType.charAt(0).toUpperCase() + packageType.slice(1);
+            document.getElementById("persons").innerText = numPersons;
+            document.getElementById("nights").innerText = adjustedNights;
+            document.getElementById("total-cost").innerText = totalCost.toLocaleString();
+        }
+
+        function validateName() {
+            let name = document.getElementById("name").value;
+            let nameError = document.getElementById("nameError");
+            if (name !== name.toUpperCase()) {
+                nameError.style.display = "block";
+                return false;
+            }
+            nameError.style.display = "none";
+            return true;
+        }
+
+        function validatePhone() {
+            let phone = document.getElementById("phone").value;
+            let phoneError = document.getElementById("phoneError");
+            if (phone.length !== 10 || isNaN(phone)) {
+                phoneError.style.display = "block";
+                return false;
+            }
+            phoneError.style.display = "none";
+            return true;
+        }
+
+        function clearError(errorId) {
+            document.getElementById(errorId).style.display = "none";
+        }
+    </script>
+</body>
+</html>

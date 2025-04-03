@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: 'Garamond', serif;
+            margin: 0;
+            padding: 0;
+            background: #e0ddbd;
+            color: gold;
+            text-align: center;
+        }
+        .navbar {
+            background: #003366;
+            padding: 20px;
+            color: gold;
+            font-size: 2em;
+            font-weight: bold;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .container {
+            margin: 120px auto;
+            background: #003366;
+            padding: 70px;
+            border-radius: 15px;
+            width: 50%;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+        h2 {
+            font-size: 28px;
+            color: gold;
+        }
+        p {
+            font-size: 22px;
+            color: white;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            background: gold;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            width: 100%;
+        }
+        .btn:hover {
+            background: darkorange;
+            transform: scale(1.05);
+        }
+        .hidden { display: none; }
+        .confirmation {
+            text-align: center;
+            padding: 20px;
+        }
+        .confirmation-icon {
+            font-size: 80px;
+            color: rgb(59, 209, 0);
+            margin-bottom: 20px;
+        }
+        .card-number-container {
+            position: relative;
+        }
+        .card-number-container input {
+            padding-left: 40px;
+        }
+        .card-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 16px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: none;
+        }
+        .expiry-cvv-container {
+            display: flex;
+            gap: 15px;
+        }
+        .expiry-cvv-container > div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">Payment</div>
+    
+    <div class="container" id="payment-section">
+        <h2>Payment Details</h2>
+        <label for="payment-method">Select Payment Method:</label><br>
+        <select id="payment-method" onchange="togglePaymentFields()">
+            <option value="card">Credit/Debit Card</option>
+            <option value="upi">UPI</option>
+        </select><br><br>
+        
+        <div id="card-details">
+            <label for="card-number">Card Number:</label>
+            <div class="card-number-container">
+                <div class="card-icon" id="card-type-icon"></div>
+                <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" pattern="\d{4}\s\d{4}\s\d{4}\s\d{4}" required>
+            </div>
+            
+            <label for="card-name">Cardholder Name:</label>
+            <input type="text" id="card-name" placeholder="Enter Name on Card" required>
+            
+            <div class="expiry-cvv-container">
+                <div>
+                    <label for="expiry">Expiry Date:</label>
+                    <input type="month" id="expiry" required>
+                </div><br>
+                <div>
+                    <label for="cvv">CVV:</label>
+                    <input type="password" id="cvv" maxlength="3" pattern="[0-9]{3}" placeholder="123" required>
+                </div>
+            </div>
+        </div>
+        
+        <div id="upi-details" class="hidden">
+            <label for="upi-id">UPI ID:</label>
+            <input type="text" id="upi-id" placeholder="Enter UPI ID (e.g., name@upi)" pattern=".+@.+" required>
+        </div>
+        
+        <button class="btn" id="pay-now-btn">Pay Now</button>
+    </div>
+
+    <!-- Confirmation Section -->
+    <div class="container hidden" id="confirmation-section">
+        <div class="confirmation">
+            <div class="confirmation-icon">✓</div>
+            <h2>Payment Successful!</h2>
+            <p>Thank you for your booking.</p>
+            <p>A confirmation has been sent to your email.</p>
+            <p>Booking Reference: #<span id="booking-ref"></span></p>
+            <button class="btn" onclick="window.location.href='index.html'">Return to Home</button>
+        </div>
+    </div>
+
+    <script>
+        // Generate a random booking reference
+        function generateBookingRef() {
+            return Math.floor(100000 + Math.random() * 900000);
+        }
+
+        // Toggle between payment methods
+        function togglePaymentFields() {
+            const method = document.getElementById("payment-method").value;
+            document.getElementById("card-details").classList.toggle("hidden", method !== "card");
+            document.getElementById("upi-details").classList.toggle("hidden", method !== "upi");
+        }
+
+        // Format card number with spaces every 4 digits
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            // Remove all non-digit characters
+            let value = this.value.replace(/\D/g, '');
+            
+            // Add space after every 4 digits
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += value[i];
+            }
+            
+            // Update the input value
+            this.value = formatted;
+            
+            // Detect card type and show icon
+            detectCardType(value);
+        });
+
+        // Detect card type and show appropriate icon
+        function detectCardType(number) {
+            const icon = document.getElementById('card-type-icon');
+            icon.style.display = 'none';
+            
+            if (/^4/.test(number)) {
+                icon.style.display = 'block';
+                icon.style.backgroundImage = 'url("https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg")';
+            } 
+            else if (/^5[1-5]/.test(number)) {
+                icon.style.display = 'block';
+                icon.style.backgroundImage = 'url("https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg")';
+            }
+            else if (/^3[47]/.test(number)) {
+                icon.style.display = 'block';
+                icon.style.backgroundImage = 'url("https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg")';
+            }
+        }
+
+        // Handle payment submission
+        document.getElementById("pay-now-btn").addEventListener("click", function() {
+            // Validate form based on selected payment method
+            const method = document.getElementById("payment-method").value;
+            let isValid = true;
+            
+            if (method === "card") {
+                const cardNumber = document.getElementById("card-number");
+                const cardName = document.getElementById("card-name");
+                const expiry = document.getElementById("expiry");
+                const cvv = document.getElementById("cvv");
+                
+                // Remove spaces for validation
+                const rawCardNumber = cardNumber.value.replace(/\s/g, '');
+                if (rawCardNumber.length !== 16 || isNaN(rawCardNumber)) {
+                    cardNumber.setCustomValidity("Please enter a valid 16-digit card number");
+                    cardNumber.reportValidity();
+                    isValid = false;
+                } else {
+                    cardNumber.setCustomValidity("");
+                }
+                
+                if (!cardName.checkValidity()) {
+                    cardName.reportValidity();
+                    isValid = false;
+                }
+                if (!expiry.checkValidity()) {
+                    expiry.reportValidity();
+                    isValid = false;
+                }
+                if (!cvv.checkValidity()) {
+                    cvv.reportValidity();
+                    isValid = false;
+                }
+            } else if (method === "upi") {
+                const upiId = document.getElementById("upi-id");
+                if (!upiId.checkValidity()) {
+                    upiId.reportValidity();
+                    isValid = false;
+                }
+            }
+            
+            // If validation passes, show confirmation
+            if (isValid) {
+                document.getElementById("payment-section").classList.add("hidden");
+                document.getElementById("confirmation-section").classList.remove("hidden");
+                document.getElementById("booking-ref").textContent = generateBookingRef();
+                
+                // Scroll to confirmation
+                document.getElementById("confirmation-section").scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Initialize the page
+        window.onload = function() {
+            togglePaymentFields(); // Set correct payment fields based on default selection
+        };
+    </script>
+</body>
+</html>
