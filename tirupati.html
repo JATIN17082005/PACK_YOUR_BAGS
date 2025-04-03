@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirupati - One of the most visited pilgrimage sites in the world.</title>
+    <style>
+        body {
+            font-family: 'Garamond', serif;
+            margin: 0;
+            padding: 0;
+            background: #e0ddbd;
+            color: aliceblue;
+            text-align: center;
+        }
+
+        .navbar {
+            background: #004d99;
+            padding: 20px;
+            color: gold;
+            font-size: 2em;
+            font-weight: bold;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero {
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .slideshow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+
+        .hero h1 {
+            font-size: 10em;
+            text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+            color: gold;
+            margin: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .description {
+            padding: 40px;
+            font-size: 1.3em;
+            background: #003366;
+            border-radius: 15px;
+            margin: 30px auto;
+            width: 80%;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 50px;
+            color:gold;
+        }
+
+        .footer {
+            background: #002244;
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            margin-top: 30px;
+        }
+
+        .back-btn {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            background: gold;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            background: darkorange;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar"><a href="index.html"><image src="logo.png" height="100px"></image></a></div> 
+    <div class="hero">
+        <div class="slideshow">
+            <div class="slide" style="background-image: url('tirupati.jpg');"></div>
+            <div class="slide" style="background-image: url('tirupati2.jpg');"></div>
+            <div class="slide" style="background-image: url('tirupati3.jpg');"></div>
+        </div>
+        <h1>Welcome to Tirupati</h1>
+    </div>
+
+    <div class="description">
+        <h2>Places to Visit in Tirupati:-</h2>
+        <ol>
+            <li>Tirumala Venkateswara Temple - Sacred, famous Lord Venkateswara temple</li>
+            <li>Kapila Theertham - Holy waterfall, Lord Shiva temple</li>
+            <li>Talakona Waterfalls - Tallest waterfall, serene nature retreat</li>
+            <li>Srivari Padalu - Lord Vishnu’s divine footprints</li>
+            <li>Silathoranam - Natural rock arch formation</li>
+            <li>ISKCON Temple - Peaceful Krishna consciousness center</li>
+            <li>Chandragiri Fort - Historical fort, scenic hilltop views</li>
+            <li>Sri Govindaraja Swamy Temple - Grand temple, intricate Dravidian architecture</li>
+            <li>Deer Park - Wildlife sanctuary, peaceful nature experience</li>
+            <li>TTD Gardens - Beautiful flowers, serene environment</li>
+        </ol>
+        
+    </div>
+
+    <div class="footer">
+        <button class="back-btn" onclick="window.location.href='booking.html'" >Book Now!</button>
+    </div>
+    <script>
+        // Slideshow functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            
+            // Show first slide
+            slides[currentSlide].classList.add('active');
+            
+            // Change slide every 5 seconds
+            setInterval(nextSlide, 5000);
+            
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
